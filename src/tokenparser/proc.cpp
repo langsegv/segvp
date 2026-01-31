@@ -75,6 +75,7 @@ namespace segvc {
 		if(eat(Tokens::TOK_KEY_RETURN)) {
 			std::shared_ptr<ReturnStatement> stm = std::make_shared<ReturnStatement>();
 			stm->expr = eval(Tokens::TOK_SYS_SKIP);
+			parent->childs.push_back(stm);
 			return 0;
 		}
 
