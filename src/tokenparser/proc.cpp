@@ -4,6 +4,7 @@
 
 namespace segvc {
 
+
 	/*
 	* Return values and their meanings:
 	*   0 : No catch
@@ -11,6 +12,7 @@ namespace segvc {
 	*   2 : Finish
 	*/
 	int Tokenparser::proc(std::shared_ptr<BlockStatement> parent, const bool _inline, const bool subscope) {
+		std::unique_lock<std::shared_mutex> raii(parent->mutex);
 		if(subscope && eat(Tokens::TOK_DEL_CBRACL)) {
 			if(proc_body(parent, Tokens::TOK_DEL_CBRACR)) return 1;
 			return 0;
@@ -34,7 +36,6 @@ namespace segvc {
 		} else if(((dec_type != DeclarationType::UNDEFINED) || eat(Tokens::TOK_KEY_LET)) && eatDec(parent, dec_type)) {
 			if(_inline) {
 				/* Warning */
-				/* Maybe can be solved with -O1 or -O2 (I'll add these options later) */
 			}
 			return 0;
 		}
@@ -74,15 +75,23 @@ namespace segvc {
 
 		if(eat(Tokens::TOK_KEY_RETURN)) {
 			std::shared_ptr<ReturnStatement> stm = std::make_shared<ReturnStatement>();
+			std::unique_lock<std::shared_mutex> stmRaii(stm->mutex);
 			stm->expr = eval(Tokens::TOK_SYS_SKIP);
+			//std::unique_lock<std::shared_mutex> expRaii(stm->expr->mutex);
+
 			parent->childs.push_back(stm);
+
 			return 0;
 		}
 
 		ExprPtr expr = eval(Tokens::TOK_SYS_SKIP);
+		std::unique_lock<std::shared_mutex> expRaii(expr->mutex);
 		if(expr) {
 			std::shared_ptr<ExpressionStatement> stm = std::make_shared<ExpressionStatement>();
+			std::unique_lock<std::shared_mutex> stmRaii(stm->mutex);
 			stm->expr = expr;
+			//std::unique_lock<std::shared_mutex> expRaii(stm->expr->mutex);
+			
 			parent->childs.push_back(stm);
 			return 0;
 		}
