@@ -4,7 +4,7 @@
 
 namespace segvc {
 
-	int Tokenparser::eatTyper(std::shared_ptr<Typer>& c_typer, bool followAll) {
+	int Tokenparser::eatTyper(std::shared_ptr<Typer> c_typer, bool followAll) {
 		while(1) {
 			if(c_token.ttype == Tokens::TOK_TYPE) {
 				uint8_t vtype = getPVarT(c_token.name);
@@ -40,7 +40,7 @@ namespace segvc {
 
 				if(c_typer)
 					c_typer->respect_typer = ptr_typer;
-				ptr_typer->vtype = VAR_FUN;
+				c_typer->vtype = VAR_FUN;
 				c_typer = ptr_typer;
 			} else if(eat(Tokens::TOK_DEL_SBRACL)) {
 				ExprPtr expr = eval(Tokens::TOK_DEL_SBRACR);
@@ -55,6 +55,7 @@ namespace segvc {
 				c_typer = ptr_typer;
 			} else if(followAll && eat(Tokens::TOK_STAR)) {
 				std::shared_ptr<Typer> ptr_typer = std::make_shared<Typer>();
+
 				if(c_typer)
 					c_typer->respect_typer = ptr_typer;
 				c_typer->vtype = VAR_POINTER;
