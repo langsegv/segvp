@@ -24,6 +24,10 @@ namespace segvc {
 			eat(Tokens::TOK_IDENTIFIER);
 
 			auto par_typer = std::make_shared<Typer>();
+			if(!eatTyper(par_typer, true) && !par_name.empty()) { /* in case of having a name but catching an error when reading typer */
+				result = 0;
+				continue;
+			}
 
 			params.push_back(
 				std::make_pair(
