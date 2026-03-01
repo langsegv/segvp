@@ -14,6 +14,23 @@ namespace segvc {
 		std::string var_name = c_token.name;
 		eat(Tokens::TOK_IDENTIFIER);
 
+		std::vector<
+			std::pair<
+				std::string,
+				VariableEntry
+		>> params;
+
+		if(eat(Tokens::TOK_DEL_PARANL)) {
+			if(!eatFnParams(params)) {
+				/* error */
+				return 0;
+			}
+			if(!eat(Tokens::TOK_DEL_PARANR)) {
+				/* error */
+				return 0;
+			}
+		}
+
 		std::shared_ptr<Typer> c_typer = std::make_shared<Typer>();
 		if(!eatTyper(c_typer, true)) {
 			/* error */
@@ -37,6 +54,8 @@ namespace segvc {
 		decStm->dec_type = dec_type;
 		decStm->type_spec = c_typer;
 		decStm->body = std::make_shared<BlockStatement>();
+		decStm->params = std::move(params);
+
 		if(proc_body(decStm->body, Tokens::TOK_DEL_CBRACR)) {
 			/* error */
 			return 0;
