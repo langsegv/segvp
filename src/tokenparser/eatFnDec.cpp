@@ -8,8 +8,10 @@ namespace segvc {
 		std::shared_ptr<BlockStatement> parent,
 		DeclarationType dec_type
 	) {
-		if(c_token.ttype != Tokens::TOK_IDENTIFIER)
+		if(c_token.ttype != Tokens::TOK_IDENTIFIER) {
+			/* error */
 			return 0;
+		}
 
 		std::string var_name = c_token.name;
 		eat(Tokens::TOK_IDENTIFIER);
@@ -34,6 +36,7 @@ namespace segvc {
 		std::shared_ptr<Typer> c_typer = std::make_shared<Typer>();
 		if(!eatTyper(c_typer, true)) {
 			/* error */
+			return 0;
 		}
 
 		// If therese no parameters specified, set it as 0 parameters
