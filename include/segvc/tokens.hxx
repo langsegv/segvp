@@ -127,8 +127,9 @@ struct Token {
 
 	int line = 0;
 	int column = 0;
-	int startOffset = 0;
-	int   endOffset = 0;
+	int lineStartOffset = 0;
+	int     startOffset = 0;
+	int       endOffset = 0;
 
 	bool isSynthetic = false;
 

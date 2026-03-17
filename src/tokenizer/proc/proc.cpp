@@ -93,6 +93,7 @@ namespace segvc {
 							static_cast<size_t>(in.tellg()) - line_beg + 1,
 							readLine(in)), 1);
 
+			c_token.lineStartOffset = line_beg;
 
 			*_output_pipe << std::move(c_token);
 	        }
