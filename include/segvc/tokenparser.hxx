@@ -23,6 +23,7 @@ struct Tokenparser {
 	Token c_token;
 
 	enum {
+		EAT_INFO_SUSPEND = 0,
 		EAT_INFO_EAT = 0b1,
 		EAT_INFO_SKIP = 0b10,
 	};
