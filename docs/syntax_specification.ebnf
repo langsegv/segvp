@@ -1,0 +1,159 @@
+letter = "A" | "B" | "C" | "D" | "E" | "F" | "G"
+       | "H" | "I" | "J" | "K" | "L" | "M" | "N"
+       | "O" | "P" | "Q" | "R" | "S" | "T" | "U"
+       | "V" | "W" | "X" | "Y" | "Z" | "a" | "b"
+       | "c" | "d" | "e" | "f" | "g" | "h" | "i"
+       | "j" | "k" | "l" | "m" | "n" | "o" | "p"
+       | "q" | "r" | "s" | "t" | "u" | "v" | "w"
+       | "x" | "y" | "z" ;
+
+binaryDigit = "0" | "1";
+octalDigit = "0" | "1" | "2" | "3" | "4" | "5" | "6" | "7";
+digit = "0" | "1" | "2" | "3" | "4" | "5" | "6" | "7" | "8" | "9" ;
+hexDigit = digit | "a" | "b" | "c" | "d" | "e" | "f" | "A" | "B" | "C" | "D" | "E" | "F";
+
+identifier = letter , { letter | digit | "_" } ;
+
+alpNum = ( letter | digit ), { letter | digit | "_" } ;
+
+(*
+	A number literal must start with a digit.
+
+	If the first digit is 0 and leading char is x, it's a hexadecimal number literal,
+	If the first digit is 0 and leading char is b, it's a octal number literal,
+	If the first digit is 0, it's a octal number literal,
+
+	A number literal can have a suffix identifier.
+*)
+numberLiteral = (
+	  "0", ( "x" | "X" ), hexDigit, { hexDigit }
+	| "0", ( "b" | "B" ), binaryDigit, { binaryDigit }
+	| "0", octalDigit, { octalDigit }
+	| ( digit - "0" ), { digit }
+), [ identifier ];
+
+charLiteral= "'", ? a character ?, "'";
+stringLiteral= "\"", {? a character ?}, "\"";
+
+(*   <a b c|   or   |a b c>   *)
+vectorLiteral= ( "<", alpNum, { alpNum }, "|" ) | ( "|", alpNum, { alpNum }, ">" );
+
+literal = numberLiteral | charLiteral | stringLiteral | vectorLiteral;
+
+typeQualifier = "mut" | "const" | "volatile";
+
+typeEntry = [
+	typeQualifier
+],{
+	( "*" | "&" ),
+	[ typeQualifier ]
+}, [
+	identifier
+];
+
+declarationEntry = ( identifier | "(", declarationEntry, ")" ), typeEntry;
+
+
+(***** Expressions *****)
+
+
+primaryExpression = identifier | literal | "(",  expression, ")";
+
+memberAccessExpression = primaryExpression, { ( "." | "->" | "::" ),  primaryExpression };
+
+functionCallOperator = "(", [ expression, { ",", expression } ], ")";
+
+rangeExpression = expression, ( ".." | "..=" ), expression;
+subscriptionOperator = "[", ( expression | rangeExpression ), { ",", ( expression | rangeExpression ) }, "]";
+
+postfixUnaryOperator = "++" | "--" | functionCallOperator | subscriptionOperator;
+postfixUnaryExpression = memberAccessExpression, { postfixUnaryOperator };
+
+prefixUnaryOperator = "+" | "-" | "++" | "--" | "&" | "*";
+prefixUnaryExpression = { prefixUnaryOperator }, postfixUnaryExpression;
+
+
+(* MUL, DIV, MOD *)
+binaryProductExpression = prefixUnaryExpression, { ( "*" | "/" | "%" ), prefixUnaryExpression };
+
+(* ADD, SUB *)
+binarySumExpression = binaryProductExpression, { ( "+" | "-" ), binaryProductExpression };
+
+(* BIT SHIFT *)
+binaryBitshiftExpression = binarySumExpression, { ( "<<" | ">>" ), binarySumExpression };
+
+(* COMPARASION *)
+binaryCompareExpression = binaryBitshiftExpression, { ( "<" | "<=" | ">=" | ">" ), binaryBitshiftExpression };
+
+(* Not Equals *)
+binaryNotequalsExpression = binaryCompareExpression, { ( "!=" ), binaryCompareExpression };
+
+(* Equals *)
+binaryEqualsExpression = binaryNotequalsExpression, { ( "==" ), binaryNotequalsExpression };
+
+(* Bitwise AND *)
+binaryBitwiseAndExpression = binaryEqualsExpression, { ( "&" ), binaryEqualsExpression };
+
+(* Bitwise XOR *)
+binaryBitwiseXorExpression = binaryBitwiseAndExpression, { ( "^" ), binaryBitwiseAndExpression };
+
+(* Bitwise OR *)
+binaryBitwiseOrExpression = binaryBitwiseXorExpression, { ( "|" ), binaryBitwiseXorExpression };
+
+(* AND *)
+binaryAndExpression = binaryBitwiseOrExpression, { ( "&&" ), binaryBitwiseOrExpression };
+
+(* OR *)
+binaryOrExpression = binaryAndExpression, { ( "||" ), binaryAndExpression };
+
+(* Ternary *)
+ternaryExpression = binaryOrExpression, [ "?", [ expression ], ":", expression ];
+
+(* Assignment *)
+binaryAssignmentExpression = ternaryExpression, [ ( "=" | "+=" | "-=" | "*=" | "/=" | "%=" | "&=" | "&&=" | "||=" | "^=" | "%=" | "<<=" | ">>=" | "<>" ), binaryAssignmentExpression ];
+
+(* Comma *)
+commaExpression = binaryAssignmentExpression, { ",", binaryAssignmentExpression };
+
+(* Tuple *)
+tupleExpression = "[", expression, { ",", expression }, "]";
+
+expression = tupleExpression | commaExpression | binaryAssignmentExpression;
+
+
+(***** Statements *****)
+
+(* Declaration *)
+declarationStatement = ( "let" | "static" | "const" ), declarationEntry, [ "=", expression ];
+
+scopeQualifier = ( "extern", stringLiteral ) | "async";
+
+(* Scope / Block *)
+scopeStatement = [ scopeQualifier ], ( statement | "{", { statement }, "}" );
+
+(* Function *)
+functionDeclarationStatement = "fn", identifier, "(", [ declarationStatement, { ",", declarationStatement } ], ")", statement;
+
+(* Expression *)
+expressionStatement = expression;
+
+(* If/Condition *)
+ifStatement = "if", expression, ":", statement, [ "else", statement ];
+
+(* For *)
+forStatement = "for", statement, [ ";", [ expression ], [ ";", statement ] ], [":", statement];
+
+(* Do/While *)
+doWhileStatement = ["do", statement], "while", expression, ":", statement, ["then", statement];
+
+(* Return *)
+returnStatement = "return", [ expression ];
+
+statement = ( declarationStatement | scopeStatement | functionDeclarationStatement | expressionStatement | ifStatement | forStatement | doWhileStatement | returnStatement );
+
+
+
+moduleSpecification = "mod", identifier;
+importRequest = "import", identifier, { ".",  identifier }, [ "as", identifier ];
+
+program = [ moduleSpecification ], { importRequest }, { statement, [ ";" ] };
