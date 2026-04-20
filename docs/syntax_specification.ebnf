@@ -126,7 +126,8 @@ expression = tupleExpression | commaExpression | binaryAssignmentExpression;
 (* Declaration *)
 declarationStatement = ( "let" | "static" | "const" ), declarationEntry, [ "=", expression ];
 
-scopeQualifier = ( "extern", stringLiteral ) | "async";
+
+scopeQualifier = ( "extern", [ stringLiteral ] ) | "pub" | "priv" | "defer" | ;
 
 (* Scope / Block *)
 scopeStatement = [ scopeQualifier ], ( statement | "{", { statement }, "}" );
