@@ -1,9 +1,8 @@
 #pragma once
 
 #include <memory>
-#include <string>
 #include <cstdint>
-#include <segvc/variableentry.hxx>
+#include <segvc/DeclarationEntry.hxx>
 
 namespace segvc {
 
@@ -65,16 +64,15 @@ using ExprPtr = std::shared_ptr<Expression>;
 struct Statement; // Pre definition
 using StmPtr = std::shared_ptr<Statement>;
 
-struct Typer {
+struct TypeEntry {
 	ExprPtr sizer;
 	uint8_t vtype;
 	uint8_t spec;
-	std::shared_ptr<Typer> respect_typer;
+	std::shared_ptr<TypeEntry> respect_typer;
 
-	std::vector<
-		std::pair<
-			std::string,
-			VariableEntry
+	std::vector<std::pair<
+		DeclarationEntry,
+		ExprPtr
 	>> func_params;
 };
 

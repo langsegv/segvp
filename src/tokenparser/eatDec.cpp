@@ -1,85 +1,72 @@
 #include <segvc/tokenparser.hxx>
 #include <segvc/expressions.hxx>
-#include <segvc/qcerrors.hxx>
 #include <segvc/util/concat.hxx>
+#include <segvc/DeclarationEntry.hxx>
 
 namespace segvc {
 
-	int Tokenparser::eatDec(
+	std::unique_ptr<DeclarationEntry> Tokenparser::readDeclarationEntry() {
+		std::unique_ptr<DeclarationEntry> decl = std::make_unique<DeclarationEntry>();
+		if (eat(Tokens::TOK_DEL_PARANL)) {
+			decl->type = DeclarationEntry::Type::parent;
+			do {
+				std::unique_ptr<DeclarationEntry> child = readDeclarationEntry();
+				if (!child) {
+					/* error */
+					return nullptr;
+				}
+				decl->childs.push_back(std::move(child));
+			} while (eat(Tokens::TOK_COMMA));
+			if (!eat(Tokens::TOK_DEL_PARANR)) {
+				/* error */
+				return nullptr;
+			}
+		} else if (c_token.ttype == Tokens::TOK_IDENTIFIER) {
+			decl->type = DeclarationEntry::Type::individual;
+			decl->name = c_token.name;
+			eat(Tokens::TOK_IDENTIFIER);
+		} else {
+			return nullptr;
+		}
+
+		std::shared_ptr<TypeEntry> c_typer = std::make_shared<TypeEntry>();
+
+		/**
+		 *  No need to check if it's nullptr or not by default,
+		 *  Only if it's constant
+		 */
+		eatTyper(c_typer, true);
+
+		decl->typer = c_typer;
+
+		return decl;
+	}
+
+	/** This function reads tokens and creates a new FunctionStatement object.
+	 *  If it caughts a problem it must return 0.
+	 *  A successfull operation would add a DeclarationStatement instance to the param 'parent'.
+	 *
+	 *  @param parent Parent scope
+	 *  @param dec_type Represents if variable defined as "const", "static" or by default "let".
+	 */
+	bool Tokenparser::eatDec(
 		std::shared_ptr< BlockStatement > parent,
 		DeclarationType dec_type
 	) {
-		bool hasAssignments = false;
-
 		std::shared_ptr<DeclarationStatement> decStm = std::make_shared<DeclarationStatement>();
 		parent->childs.push_back(decStm);
 
-		do {
-			if(c_token.ttype != Tokens::TOK_IDENTIFIER) {
-				break;
-			}
-
-			std::string var_name = c_token.name;
-			eat(Tokens::TOK_IDENTIFIER);
-
-			std::shared_ptr<Typer> c_typer = std::make_shared<Typer>();
-
-
-			/**
-			 *  No need to check if it's nullptr or not by default,
-			 *  Only if it's constant
-			 */
-			eatTyper(c_typer, true);
-
-
-			ExprPtr initializer = nullptr;
-			if(eat(Tokens::TOK_ASSIGN)) {
-				hasAssignments = true;
-
-				initializer = eval_single(Tokens::TOK_SYS_SKIP);
-				if(!initializer) {
-					/* error */
-					std::cout << "No value passed after '=' !" << std::endl;
-					return 0;
-				}
-			}
-
-			decStm->variables.push_back({
-				var_name,
-				VariableEntry {
-					c_typer,
-					initializer
-				}
-			});
-
-		} while(eat(Tokens::TOK_COMMA));
-
-		std::shared_ptr<Typer> master_typer = nullptr;
-		ExprPtr master_assign = nullptr;
-		if(eat(Tokens::TOK_COLON)) {
-			master_typer = std::make_shared<Typer>();
-			if(!eatTyper(master_typer, true)) {
-				/* error */
-			}
-
-			if(eat(Tokens::TOK_ASSIGN)) {
-				master_assign = eval_single(Tokens::TOK_SYS_SKIP);
-			}
-		}
-
-
 		decStm->dec_type = dec_type;
-		decStm->master_initializer = master_assign;
-
-		for(auto [var_name, entry]: decStm->variables) {
-
-			if(master_typer) {
-				concat(entry.typer, master_typer);
-				entry.typer = master_typer;
-			}
+		if (!((decStm->entry = readDeclarationEntry()))) {
+			/* error */
+			return false;
 		}
 
-		return 1;
+		if(eat(Tokens::TOK_ASSIGN)) {
+			decStm->master_initializer = eval_single(Tokens::TOK_SYS_SKIP);
+		}
+
+		return true;
 	}
 
 }

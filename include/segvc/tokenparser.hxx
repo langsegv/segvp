@@ -35,8 +35,8 @@ struct Tokenparser {
 	uint8_t getPVarT(const std::string& str);
 
 	int eat(Tokens::Type ttype);
-	int eatTyper(std::shared_ptr<Typer> c_typer, bool followAll);
-	int eatDec(
+	int eatTyper(std::shared_ptr<TypeEntry> c_typer, bool followAll);
+	bool eatDec(
 		std::shared_ptr<BlockStatement> parent,
 		DeclarationType dec_type
 	);
@@ -47,11 +47,10 @@ struct Tokenparser {
 	);
 
 	int eatFnParams(
-		std::vector<
-			std::pair<
-				std::string,
-				VariableEntry
-		>> &params
+		std::vector<std::pair<
+			DeclarationEntry,
+			ExprPtr
+			>> &params
 	);
 
         int eatForStatement(
@@ -84,6 +83,9 @@ struct Tokenparser {
 		auto order = parser_eval_orders[index];
 		return (this->*order.eval_func)(order.bindings, index);
 	}
+
+private:
+	std::unique_ptr<DeclarationEntry> readDeclarationEntry();
 };
 
 }

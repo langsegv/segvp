@@ -5,9 +5,9 @@
 #include <vector>
 #include <shared_mutex>
 
-#include <segvc/typer.hxx>
+#include <segvc/TypeEntry.hxx>
 #include <segvc/irvalue.hxx>
-#include <segvc/variableentry.hxx>
+#include <segvc/DeclarationEntry.hxx>
 
 namespace segvc {
 
@@ -184,11 +184,7 @@ enum DeclarationType {
 struct DeclarationStatement : Statement {
 	DeclarationType dec_type;
 
-	std::vector<
-		std::pair<
-			std::string,
-			VariableEntry
-		>> variables;
+	std::unique_ptr<DeclarationEntry> entry;
 
 	ExprPtr master_initializer;
 
@@ -203,8 +199,8 @@ struct BlockStatement : public Statement {
 
 struct FunctionDeclarationStatement : Statement {
         std::string name;
-	DeclarationType dec_type;
-        std::shared_ptr<Typer> type_spec;
+		DeclarationType dec_type;
+        std::shared_ptr<TypeEntry> type_spec;
         std::shared_ptr<BlockStatement> body;
 
 	/*
@@ -219,11 +215,10 @@ struct FunctionDeclarationStatement : Statement {
 	 *  eg. First function accept string and string's size but then you relaize you can find length of the string with loops (but Yes, bad practice for some cases)
 	 *  eg. External source call's a function with extra parameters but you only need some of the parameters
 	 */
-	std::vector<
-		std::pair<
-			std::string,
-			VariableEntry
-	>> params;
+	std::vector<std::pair<
+			DeclarationEntry,
+			ExprPtr
+		>> params;
 
         void accept(StatementVisitor& v) override;
 };

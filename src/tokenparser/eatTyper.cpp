@@ -4,7 +4,7 @@
 
 namespace segvc {
 
-	int Tokenparser::eatTyper(std::shared_ptr<Typer> c_typer, bool followAll) {
+	int Tokenparser::eatTyper(std::shared_ptr<TypeEntry> c_typer, bool followAll) {
 		while(1) {
 			if(c_token.ttype == Tokens::TOK_TYPE) {
 				uint8_t vtype = getPVarT(c_token.name);
@@ -26,7 +26,7 @@ namespace segvc {
 			else if(eat(Tokens::TOK_KEY_VOLATILE))
 				c_typer->spec |= (1 << SPEC_VOL);
 			else if(eat(Tokens::TOK_DEL_PARANL)) {
-				std::shared_ptr<Typer> ptr_typer = std::make_shared<Typer>();
+				std::shared_ptr<TypeEntry> ptr_typer = std::make_shared<TypeEntry>();
 				if(!eatFnParams(ptr_typer->func_params) ) {
 					/* error */
 					return 0;
@@ -47,14 +47,14 @@ namespace segvc {
 				if(!expr) {
 					/* error */
 				}
-				std::shared_ptr<Typer> ptr_typer = std::make_shared<Typer>();
+				std::shared_ptr<TypeEntry> ptr_typer = std::make_shared<TypeEntry>();
 				ptr_typer->sizer = expr;
 				if(c_typer)
 					c_typer->respect_typer = ptr_typer;
 				c_typer->vtype = VAR_ARRAY;
 				c_typer = ptr_typer;
 			} else if(followAll && eat(Tokens::TOK_STAR)) {
-				std::shared_ptr<Typer> ptr_typer = std::make_shared<Typer>();
+				std::shared_ptr<TypeEntry> ptr_typer = std::make_shared<TypeEntry>();
 
 				if(c_typer)
 					c_typer->respect_typer = ptr_typer;
