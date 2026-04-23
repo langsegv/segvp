@@ -22,7 +22,7 @@ namespace segvc {
 				/* error */
 				return 0;
 			}
-		} else if(eat(Tokens::TOK_DEL_CBRACL)) {
+		} else if(eat(Tokens::TOK_DEL_SBRACL)) {
 			main_expr = eval_tuple(Tokens::TOK_DEL_SBRACR);
 			if(!main_expr) {
 				/* error */
