@@ -36,20 +36,16 @@ charLiteral= "'", ? a character ?, "'";
 stringLiteral= "\"", {? a character ?}, "\"";
 
 (*   <a b c|   or   |a b c>   *)
-vectorLiteral= ( "<", alpNum, { alpNum }, "|" ) | ( "|", alpNum, { alpNum }, ">" );
+vectorLiteral= ( "<", alpNum, { ",", alpNum }, "|" ) | ( "|", alpNum, { ",", alpNum }, ">" );
 
 literal = numberLiteral | charLiteral | stringLiteral | vectorLiteral;
 
-typeQualifier = "mut" | "const" | "volatile";
+arrayConstructor = "[", expression, "]";
+functionConstructor = "(", { [ identifier ], typeEntry }, ")";
 
-typeEntry = [
-	typeQualifier
-],{
-	( "*" | "&" ),
-	[ typeQualifier ]
-}, [
-	identifier
-];
+typeQualifier = "*" | "&" | "mut" | "const" | "vol" | arrayConstructor | functionConstructor;
+
+typeEntry = { typeQualifier }, [ identifier ];
 
 declarationEntry = ( identifier | "(", declarationEntry, ")" ), typeEntry;
 
