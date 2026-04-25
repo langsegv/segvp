@@ -135,13 +135,13 @@ functionDeclarationStatement = "fn", identifier, "(", [ declarationStatement, { 
 expressionStatement = expression;
 
 (* If/Condition *)
-ifStatement = "if", expression, ":", statement, [ "else", statement ];
+ifStatement = "if", expression, statement, [ "else", statement ];
 
 (* For *)
-forStatement = "for", statement, [ ";", [ expression ], [ ";", statement ] ], [":", statement];
+forStatement = "for", statement, [ ";", [ expression ], [ ";", statement ] ], statement;
 
 (* Do/While *)
-doWhileStatement = ["do", statement], "while", expression, ":", statement, ["then", statement];
+doWhileStatement = ["do", statement], "while", expression, statement, ["then", statement];
 
 (* Return *)
 returnStatement = "return", [ expression ];
