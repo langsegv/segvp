@@ -16,10 +16,9 @@ namespace segvc {
 		std::string var_name = c_token.name;
 		eat(Tokens::TOK_IDENTIFIER);
 
-		std::vector<
-			std::pair<
-				std::string,
-				VariableEntry
+		std::vector<std::pair<
+			DeclarationEntry,
+			ExprPtr
 		>> params;
 
 		if(eat(Tokens::TOK_DEL_PARANL)) {
@@ -33,7 +32,7 @@ namespace segvc {
 			}
 		}
 
-		std::shared_ptr<Typer> c_typer = std::make_shared<Typer>();
+		std::shared_ptr<TypeEntry> c_typer = std::make_shared<TypeEntry>();
 		if(!eatTyper(c_typer, true)) {
 			/* error */
 			return 0;
@@ -41,7 +40,7 @@ namespace segvc {
 
 		// If therese no parameters specified, set it as 0 parameters
 		if(c_typer->vtype != VAR_FUN) {
-			std::shared_ptr<Typer> ptr_typer = std::make_shared<Typer>();
+			std::shared_ptr<TypeEntry> ptr_typer = std::make_shared<TypeEntry>();
 			ptr_typer->vtype = VAR_FUN;
 			if(c_typer)
 				c_typer->respect_typer = ptr_typer;

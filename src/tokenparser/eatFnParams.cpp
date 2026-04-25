@@ -1,17 +1,15 @@
 
 #include <segvc/tokenparser.hxx>
-#include <segvc/variableentry.hxx>
+#include <segvc/DeclarationEntry.hxx>
 
 namespace segvc {
 
 	int Tokenparser::eatFnParams(
-		std::vector<
-			std::pair<
-				std::string,
-				VariableEntry
+		std::vector<std::pair<
+			DeclarationEntry,
+			ExprPtr
 		>> &params
 	) {
-		int result=1;
 		do {
 			std::string par_name;
 
@@ -20,29 +18,27 @@ namespace segvc {
 			 */
 			if(c_token.ttype == Tokens::TOK_IDENTIFIER) {
 				par_name = c_token.name;
+				eat(Tokens::TOK_IDENTIFIER);
 			}
-			eat(Tokens::TOK_IDENTIFIER);
 
-			auto par_typer = std::make_shared<Typer>();
+			auto par_typer = std::make_shared<TypeEntry>();
 			if(!eatTyper(par_typer, true) && !par_name.empty()) { /* in case of having a name but catching an error when reading typer */
-				result = 0;
-				continue;
+				return 0;
 			}
 
-			params.push_back(
-				std::make_pair(
+			params.emplace_back(
+				DeclarationEntry{
+					DeclarationEntry::Type::individual,
 					par_name,
-					VariableEntry{
-						par_typer,
-						eat(Tokens::TOK_ASSIGN) ?
-							eval_single(Tokens::TOK_SYS_SKIP) :
-							nullptr
-					}
-				)
+					par_typer
+				},
+				eat(Tokens::TOK_ASSIGN) ?
+					eval_single(Tokens::TOK_SYS_SKIP) :
+					nullptr
 			);
 
 		} while(eat(Tokens::TOK_COMMA));
-		return result;
+		return 1;
 	}
 
 }
