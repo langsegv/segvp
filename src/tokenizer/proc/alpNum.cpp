@@ -13,37 +13,7 @@ namespace segvc {
 	void Tokenizer::procAlpNum(Token& arg) {
 		const std::string& name = arg.name;
 		Tokens::Type type;
-		if(
-			name == "u1" ||
-
-			name == "u8" ||
-			name == "i8" ||
-			name == "c8" ||
-
-			name == "u16" ||
-			name == "i16" ||
-			name == "c16" ||
-
-			name == "u32" ||
-			name == "i32" ||
-			name == "c32" ||
-			name == "f32" ||
-
-			name == "u64" ||
-			name == "i64" ||
-			name == "f64" ||
-
-			name == "u128" ||
-			name == "i128" ||
-			name == "f128" ||
-
-			name == "usize" ||
-			name == "isize" ||
-
-			name == "bool"
-		)
-			type = Tokens::TOK_TYPE;
-		else if(name == "struct")
+		if(name == "struct")
 			type = Tokens::TOK_STRUCT;
 		else if(name == "in")
 			type = Tokens::TOK_KEY_IN;
@@ -54,53 +24,53 @@ namespace segvc {
 		else if(name == "if")
 			type = Tokens::TOK_KEY_IF;
 		else if(name == "for")
-	                type = Tokens::TOK_KEY_FOR;
+		    type = Tokens::TOK_KEY_FOR;
 		else if(name == "while")
 			type = Tokens::TOK_KEY_WHILE;
 		else if(name == "return")
 			type = Tokens::TOK_KEY_RETURN;
 		else if(name == "else")
-	                type = Tokens::TOK_KEY_ELSE;
-	        else if(name == "do")
-	                type = Tokens::TOK_KEY_DO;
+            type = Tokens::TOK_KEY_ELSE;
+	    else if(name == "do")
+            type = Tokens::TOK_KEY_DO;
 		else if(name == "then")
-			type = Tokens::TOK_KEY_THEN;
-	        else if(name == "switch")
-	                type = Tokens::TOK_KEY_SWITCH;
-	        else if(name == "case")
-	                type = Tokens::TOK_KEY_CASE;
-	        else if(name == "default")
-	                type = Tokens::TOK_KEY_DEFAULT;
-	        else if(name == "break")
-	                type = Tokens::TOK_KEY_BREAK;
-	        else if(name == "continue")
-	                type = Tokens::TOK_KEY_CONTINUE;
-	        else if(name == "goto")
-	                type = Tokens::TOK_KEY_GOTO;
-	        else if(name == "sizeof")
-	                type = Tokens::TOK_KEY_SIZEOF;
-	        else if(name == "typedef")
-	                type = Tokens::TOK_KEY_TYPEDEF;
-	        else if(name == "mut")
-	                type = Tokens::TOK_KEY_MUT;
-	        else if(name == "const")
-	                type = Tokens::TOK_KEY_CONST;
-	        else if(name == "volatile")
-	                type = Tokens::TOK_KEY_VOLATILE;
-	        else if(name == "extern")
-	                type = Tokens::TOK_KEY_EXTERN;
-	        else if(name == "static")
-	                type = Tokens::TOK_KEY_STATIC;
-	        else if(name == "register")
-	                type = Tokens::TOK_KEY_REGISTER;
-	        else if(name == "inline")
-	                type = Tokens::TOK_KEY_INLINE;
-	        else if(name == "enum")
-	                type = Tokens::TOK_KEY_ENUM;
-	        else if(name == "union")
-	                type = Tokens::TOK_KEY_UNION;
+    		type = Tokens::TOK_KEY_THEN;
+        else if(name == "switch")
+            type = Tokens::TOK_KEY_SWITCH;
+        else if(name == "case")
+            type = Tokens::TOK_KEY_CASE;
+        else if(name == "default")
+            type = Tokens::TOK_KEY_DEFAULT;
+        else if(name == "break")
+            type = Tokens::TOK_KEY_BREAK;
+        else if(name == "continue")
+            type = Tokens::TOK_KEY_CONTINUE;
+        else if(name == "goto")
+            type = Tokens::TOK_KEY_GOTO;
+        else if(name == "sizeof")
+            type = Tokens::TOK_KEY_SIZEOF;
+        else if(name == "typedef")
+            type = Tokens::TOK_KEY_TYPEDEF;
+        else if(name == "mut")
+            type = Tokens::TOK_KEY_MUT;
+        else if(name == "const")
+            type = Tokens::TOK_KEY_CONST;
+        else if(name == "volatile")
+            type = Tokens::TOK_KEY_VOLATILE;
+        else if(name == "extern")
+            type = Tokens::TOK_KEY_EXTERN;
+        else if(name == "static")
+            type = Tokens::TOK_KEY_STATIC;
+        else if(name == "register")
+            type = Tokens::TOK_KEY_REGISTER;
+        else if(name == "inline")
+            type = Tokens::TOK_KEY_INLINE;
+        else if(name == "enum")
+            type = Tokens::TOK_KEY_ENUM;
+        else if(name == "union")
+            type = Tokens::TOK_KEY_UNION;
 		else if(name == "ndet")
-	                type = Tokens::TOK_KEY_NDET;
+	        type = Tokens::TOK_KEY_NDET;
 		else type = Tokens::TOK_IDENTIFIER;
 
 		arg.ttype = type;

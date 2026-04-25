@@ -32,8 +32,6 @@ struct Tokenparser {
 	void use(std::shared_ptr<BlockStatement> stm_root);
 	void use(int log_options);
 
-	uint8_t getPVarT(const std::string& str);
-
 	int eat(Tokens::Type ttype);
 	int eatTyper(std::shared_ptr<TypeEntry> c_typer, bool followAll);
 	bool eatDec(

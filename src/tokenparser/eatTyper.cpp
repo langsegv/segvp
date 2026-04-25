@@ -6,14 +6,14 @@ namespace segvc {
 
 	int Tokenparser::eatTyper(std::shared_ptr<TypeEntry> c_typer, bool followAll) {
 		while(1) {
-			if(c_token.ttype == Tokens::TOK_TYPE) {
-				uint8_t vtype = getPVarT(c_token.name);
-				eat(Tokens::TOK_TYPE);
+			if(c_token.ttype == Tokens::TOK_IDENTIFIER) {
+				c_typer->name = c_token.name;
+				eat(Tokens::TOK_IDENTIFIER);
 
-				if(c_typer->vtype)
+				if(c_typer->vtype) /* warning */
 					std::cerr << "Warning! Declaration with multiple types, last one will be count!!" << std::endl;
 
-				c_typer->vtype = vtype;
+				c_typer->vtype = VAR_TYPE;
 			}
 			else if(eat(Tokens::TOK_KEY_NDET))
 				c_typer->spec |= (1 << SPEC_NDET);

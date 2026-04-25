@@ -9,7 +9,6 @@ namespace segvc {
 namespace Tokens {
 
 typedef enum {
-	TOK_TYPE,
 	TOK_STRUCT,
 	TOK_IDENTIFIER,
 	TOK_NUMBER_LITERAL,
