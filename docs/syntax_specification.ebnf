@@ -129,7 +129,7 @@ scopeQualifier = ( "extern", [ stringLiteral ] ) | "pub" | "priv" | "defer" | ;
 scopeStatement = [ scopeQualifier ], ( statement | "{", { statement }, "}" );
 
 (* Function *)
-functionDeclarationStatement = "fn", identifier, "(", [ declarationStatement, { ",", declarationStatement } ], ")", statement;
+functionDeclarationStatement = "fn", identifier, "(", [ declarationEntry, { ",", declarationEntry } ], ")", statement;
 
 (* Expression *)
 expressionStatement = expression;
