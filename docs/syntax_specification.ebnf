@@ -25,12 +25,14 @@ alpNum = ( letter | digit ), { letter | digit | "_" } ;
 
 	A number literal can have a suffix identifier.
 *)
-numberLiteral = (
+number = (
 	  "0", ( "x" | "X" ), hexDigit, { hexDigit }
 	| "0", ( "b" | "B" ), binaryDigit, { binaryDigit }
 	| "0", octalDigit, { octalDigit }
 	| ( digit - "0" ), { digit }
 ), [ identifier ];
+
+numberLiteral = ( number, [ ".", number ] ) | ( ".", number )
 
 charLiteral= "'", ? a character ?, "'";
 stringLiteral= "\"", {? a character ?}, "\"";
