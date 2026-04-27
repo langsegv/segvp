@@ -55,8 +55,8 @@ namespace segvc {
             type = Tokens::TOK_KEY_MUT;
         else if(name == "const")
             type = Tokens::TOK_KEY_CONST;
-        else if(name == "volatile")
-            type = Tokens::TOK_KEY_VOLATILE;
+        else if(name == "vol")
+            type = Tokens::TOK_KEY_VOL;
         else if(name == "extern")
             type = Tokens::TOK_KEY_EXTERN;
         else if(name == "static")
