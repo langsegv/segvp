@@ -69,8 +69,6 @@ namespace segvc {
             type = Tokens::TOK_KEY_ENUM;
         else if(name == "union")
             type = Tokens::TOK_KEY_UNION;
-		else if(name == "ndet")
-	        type = Tokens::TOK_KEY_NDET;
 		else type = Tokens::TOK_IDENTIFIER;
 
 		arg.ttype = type;

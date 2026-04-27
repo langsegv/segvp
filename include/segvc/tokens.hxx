@@ -43,10 +43,6 @@ typedef enum {
 	TOK_KEY_INLINE,
 	TOK_KEY_ENUM,
 	TOK_KEY_UNION,
-	TOK_KEY_NDET, /*  Example:
-			  *  let byte ndet u1 = |0b101> + |0b011>
-			  *  let ndet ndet u1 = |.5f>
-			  */
 
 	TOK_DEL_PARANL,  // (
 	TOK_DEL_PARANR,  // )

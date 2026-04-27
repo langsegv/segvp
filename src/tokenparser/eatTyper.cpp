@@ -15,8 +15,6 @@ namespace segvc {
 
 				c_typer->vtype = VAR_TYPE;
 			}
-			else if(eat(Tokens::TOK_KEY_NDET))
-				c_typer->spec |= (1 << SPEC_NDET);
 			else if(eat(Tokens::TOK_KEY_MUT))
 				c_typer->spec |= (1 << SPEC_MUT);
 			else if(eat(Tokens::TOK_KEY_INLINE))
