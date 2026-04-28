@@ -55,22 +55,16 @@ namespace segvc {
             type = Tokens::TOK_KEY_MUT;
         else if(name == "const")
             type = Tokens::TOK_KEY_CONST;
-        else if(name == "volatile")
-            type = Tokens::TOK_KEY_VOLATILE;
+        else if(name == "vol")
+            type = Tokens::TOK_KEY_VOL;
         else if(name == "extern")
             type = Tokens::TOK_KEY_EXTERN;
         else if(name == "static")
             type = Tokens::TOK_KEY_STATIC;
-        else if(name == "register")
-            type = Tokens::TOK_KEY_REGISTER;
-        else if(name == "inline")
-            type = Tokens::TOK_KEY_INLINE;
         else if(name == "enum")
             type = Tokens::TOK_KEY_ENUM;
         else if(name == "union")
             type = Tokens::TOK_KEY_UNION;
-		else if(name == "ndet")
-	        type = Tokens::TOK_KEY_NDET;
 		else type = Tokens::TOK_IDENTIFIER;
 
 		arg.ttype = type;

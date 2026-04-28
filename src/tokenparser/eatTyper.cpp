@@ -15,15 +15,11 @@ namespace segvc {
 
 				c_typer->vtype = VAR_TYPE;
 			}
-			else if(eat(Tokens::TOK_KEY_NDET))
-				c_typer->spec |= (1 << SPEC_NDET);
 			else if(eat(Tokens::TOK_KEY_MUT))
 				c_typer->spec |= (1 << SPEC_MUT);
-			else if(eat(Tokens::TOK_KEY_INLINE))
-				c_typer->spec |= (1 << SPEC_INL);
 			else if(eat(Tokens::TOK_KEY_EXTERN))
 				c_typer->spec |= (1 << SPEC_EXT);
-			else if(eat(Tokens::TOK_KEY_VOLATILE))
+			else if(eat(Tokens::TOK_KEY_VOL))
 				c_typer->spec |= (1 << SPEC_VOL);
 			else if(eat(Tokens::TOK_DEL_PARANL)) {
 				std::shared_ptr<TypeEntry> ptr_typer = std::make_shared<TypeEntry>();

@@ -15,9 +15,7 @@ enum {
 };
 
 enum {
-	SPEC_NDET = 0,
-	SPEC_MUT,
-	SPEC_INL,
+	SPEC_MUT = 0,
 	SPEC_EXT,
 	SPEC_VOL,
 };
