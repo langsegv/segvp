@@ -24,31 +24,7 @@ namespace segvc {
 			curr = in.peek();
 			Token c_token;
 
-	                if(curr == '#') {
-				isSystem = false;
-				in.ignore();
-				in >> line;
-				in.ignore();
-
-				if(in.peek() == '"') {
-					in.ignore();
-					current_file = "";
-					while(in.peek() != '"')
-						current_file += in.get();
-					in.ignore();
-				}
-
-				while(in.peek() != '\n') {
-					int op;
-					in >> op;
-					// if(op == 1) std::cerr << "New file" << std::endl;
-					// if(op == 2) std::cerr << "Finished" << std::endl;
-					if(op == 3) isSystem = true;
-					// if(op == 4) std::cerr << "Extern 'C'" << std::endl;
-				};
-				in.ignore();
-				continue;
-			} else if(std::isalpha(curr) || curr == '_') { // Identifiers/keyword must start with an alphabetic char or an '_' char
+	        if(std::isalpha(curr) || curr == '_') { // Identifiers/keyword must start with an alphabetic char or an '_' char
 				c_token = readAlpNum(in);
 				procAlpNum(c_token);
 			} else if(std::isdigit(curr) || curr == '.') { // Number literal
