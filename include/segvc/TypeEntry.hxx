@@ -16,7 +16,6 @@ enum {
 
 enum {
 	SPEC_MUT = 0,
-	SPEC_INL,
 	SPEC_EXT,
 	SPEC_VOL,
 };

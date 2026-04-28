@@ -63,8 +63,6 @@ namespace segvc {
             type = Tokens::TOK_KEY_STATIC;
         else if(name == "register")
             type = Tokens::TOK_KEY_REGISTER;
-        else if(name == "inline")
-            type = Tokens::TOK_KEY_INLINE;
         else if(name == "enum")
             type = Tokens::TOK_KEY_ENUM;
         else if(name == "union")

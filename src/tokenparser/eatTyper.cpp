@@ -17,8 +17,6 @@ namespace segvc {
 			}
 			else if(eat(Tokens::TOK_KEY_MUT))
 				c_typer->spec |= (1 << SPEC_MUT);
-			else if(eat(Tokens::TOK_KEY_INLINE))
-				c_typer->spec |= (1 << SPEC_INL);
 			else if(eat(Tokens::TOK_KEY_EXTERN))
 				c_typer->spec |= (1 << SPEC_EXT);
 			else if(eat(Tokens::TOK_KEY_VOL))
