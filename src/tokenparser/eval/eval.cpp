@@ -36,6 +36,13 @@ namespace segvc {
 				{Tokens::TOK_ASSIGN_SWAP, OPE::ASSSWAP}
 			}
 		},
+	{ // OP: ||
+			&Tokenparser::evalBinaryLeftToRight,
+			{
+				{Tokens::TOK_OP_RANGE_EXCLUSIVE, OPE::RANGEE},
+				{Tokens::TOK_OP_RANGE_INCLUSIVE, OPE::RANGEI}
+			},
+		},
 
 		// TODO: Going to add a special ternary evaulator dunction here
 

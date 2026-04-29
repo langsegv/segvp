@@ -52,6 +52,8 @@ enum class OPE {
 	COMRT,  // >
 	COMLTE, // <=
 	COMRTE, // >=
+	RANGEI, // ..
+	RANGEE, // ..=
 
 	// Unary Operators
 	ADDR, // &x
