@@ -63,6 +63,7 @@ namespace segvc {
                     p = in.peek();
                     if (p == '.') {
                         tok.name += in.get();
+                        p = in.peek();
                         if (p == '.')
                             tok.name += in.get();
                     }
@@ -71,6 +72,7 @@ namespace segvc {
                     p = in.peek();
                     if (p == '<') {
                         tok.name += in.get();
+                        p = in.peek();
                         if (p == '=')
                             tok.name += in.get();
                     } else if (p == '>') tok.name += in.get();
@@ -79,6 +81,7 @@ namespace segvc {
                     p = in.peek();
                     if (p == '>') {
                         tok.name += in.get();
+                        p = in.peek();
                         if (p == '=')
                             tok.name += in.get();
                     }
