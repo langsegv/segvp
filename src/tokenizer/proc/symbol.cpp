@@ -85,8 +85,12 @@ namespace segvc {
 	                type = Tokens::TOK_DEC;
 	        else if(name == "->")
 	                type = Tokens::TOK_ARROW;
+	        else if(name == "..")
+	        	type = Tokens::TOK_OP_RANGE_EXCLUSIVE;
+	        else if(name == "..=")
+	        	type = Tokens::TOK_OP_RANGE_INCLUSIVE;
 	        else if(name == "...")
-	                type = Tokens::TOK_ELLIPSIS;
+	        	type = Tokens::TOK_ELLIPSIS;
 	        else if(name == "+=")
 	                type = Tokens::TOK_ASSIGN_PLUS;
 	        else if(name == "-=")

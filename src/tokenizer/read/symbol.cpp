@@ -64,8 +64,7 @@ namespace segvc {
                     if (p == '.') {
                         tok.name += in.get();
                         p = in.peek();
-                        if (p == '.')
-                            tok.name += in.get();
+                        if ( p == '.' || p == '=' ) tok.name += in.get();
                     }
                     break;
                 case '<':
