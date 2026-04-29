@@ -52,11 +52,12 @@ enum class OPE {
 	COMRT,  // >
 	COMLTE, // <=
 	COMRTE, // >=
-
-	ADDR, // &x
-	DEREF, // *x
+	RANGEI, // ..
+	RANGEE, // ..=
 
 	// Unary Operators
+	ADDR, // &x
+	DEREF, // *x
 	NOT, // !
 	NEG, // ~x
 	INCB, // ++x

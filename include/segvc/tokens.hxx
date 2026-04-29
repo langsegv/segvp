@@ -105,6 +105,9 @@ typedef enum {
 	TOK_COMMA,       // ,
 	TOK_DOT,         // .
 
+	TOK_OP_RANGE_EXCLUSIVE,     // ..
+	TOK_OP_RANGE_INCLUSIVE,     // ..=
+
 	TOK_KEY_RETURN,
 
 	TOK_SYS_SKIP,

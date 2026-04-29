@@ -107,8 +107,10 @@ binaryOrExpression = binaryAndExpression, { ( "||" ), binaryAndExpression };
 (* Ternary *)
 ternaryExpression = binaryOrExpression, [ "?", [ expression ], ":", expression ];
 
+rangeExpression = ternaryExpression, { ( ".." | "..=" ), ternaryExpression }
+
 (* Assignment *)
-binaryAssignmentExpression = ternaryExpression, [ ( "=" | "+=" | "-=" | "*=" | "/=" | "%=" | "&=" | "&&=" | "||=" | "^=" | "%=" | "<<=" | ">>=" | "<>" ), binaryAssignmentExpression ];
+binaryAssignmentExpression = rangeExpression, [ ( "=" | "+=" | "-=" | "*=" | "/=" | "%=" | "&=" | "&&=" | "||=" | "^=" | "%=" | "<<=" | ">>=" | "<>" ), binaryAssignmentExpression ];
 
 (* Comma *)
 commaExpression = binaryAssignmentExpression, { ",", binaryAssignmentExpression };
