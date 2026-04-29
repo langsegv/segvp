@@ -33,10 +33,7 @@ namespace segvc {
 		}
 
 		std::shared_ptr<TypeEntry> c_typer = std::make_shared<TypeEntry>();
-		if(!eatTyper(c_typer, true)) {
-			/* error */
-			return 0;
-		}
+		eatTyper(c_typer, true);
 
 		// If therese no parameters specified, set it as 0 parameters
 		if(c_typer->vtype != VAR_FUN) {
