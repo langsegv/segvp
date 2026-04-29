@@ -59,7 +59,7 @@ namespace segvc {
                         } else break;
 		};
 
-		return c_typer->vtype;
+		return 1;
 	};
 
 }
