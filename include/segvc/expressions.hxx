@@ -53,10 +53,9 @@ enum class OPE {
 	COMLTE, // <=
 	COMRTE, // >=
 
+	// Unary Operators
 	ADDR, // &x
 	DEREF, // *x
-
-	// Unary Operators
 	NOT, // !
 	NEG, // ~x
 	INCB, // ++x
