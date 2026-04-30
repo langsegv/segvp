@@ -15,8 +15,14 @@ namespace segvc {
 		std::unique_lock<std::shared_mutex> raii(parent->mutex);
 		if(eat(Tokens::TOK_DEL_CBRACL)) {
 			std::shared_ptr<BlockStatement> block = std::make_shared<BlockStatement>();
-			if(proc_body(block, Tokens::TOK_DEL_CBRACR)) return 1;
 			parent->childs.push_back(block);
+			if(proc_body(block, Tokens::TOK_DEL_CBRACR)) return 1;
+			return 0;
+		} else if (eat(Tokens::TOK_KEY_EXTERN)) {
+			std::shared_ptr<BlockStatement> block = std::make_shared<BlockStatement>();
+			parent->childs.push_back(block);
+			block->type = BlockStatement::EXTERN;
+			if(proc(block)) return 1;
 			return 0;
 		}
 

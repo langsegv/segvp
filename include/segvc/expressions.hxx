@@ -195,6 +195,13 @@ struct DeclarationStatement : Statement {
 struct BlockStatement : public Statement {
 	std::vector<StmPtr> childs;
 
+	enum ScopeType {
+		DEFAULT = 0,
+		EXTERN,
+		PUB,
+		DEFER
+	} type = DEFAULT;
+
 	void accept(StatementVisitor& v) override;
 };
 
