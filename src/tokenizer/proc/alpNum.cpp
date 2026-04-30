@@ -60,9 +60,11 @@ namespace segvc {
         else if(name == "extern")
             type = Tokens::TOK_KEY_EXTERN;
         else if(name == "pub")
-            type = Tokens::TOK_KEY_EXTERN;
+            type = Tokens::TOK_KEY_PUB;
+        else if(name == "priv")
+            type = Tokens::TOK_KEY_PRIV;
         else if(name == "defer")
-            type = Tokens::TOK_KEY_EXTERN;
+            type = Tokens::TOK_KEY_DEFER;
         else if(name == "static")
             type = Tokens::TOK_KEY_STATIC;
         else if(name == "enum")

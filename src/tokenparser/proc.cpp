@@ -30,6 +30,12 @@ namespace segvc {
 			block->type = BlockStatement::PUB;
 			if(proc(block)) return 1;
 			return 0;
+		} else if (eat(Tokens::TOK_KEY_PRIV)) {
+			std::shared_ptr<BlockStatement> block = std::make_shared<BlockStatement>();
+			parent->childs.push_back(block);
+			block->type = BlockStatement::PRIV;
+			if(proc(block)) return 1;
+			return 0;
 		} else if (eat(Tokens::TOK_KEY_DEFER)) {
 			std::shared_ptr<BlockStatement> block = std::make_shared<BlockStatement>();
 			parent->childs.push_back(block);

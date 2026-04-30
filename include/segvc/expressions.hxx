@@ -199,6 +199,7 @@ struct BlockStatement : public Statement {
 		DEFAULT = 0,
 		EXTERN,
 		PUB,
+		PRIV,
 		DEFER
 	} type = DEFAULT;
 
