@@ -13,8 +13,10 @@ namespace segvc {
 	*/
 	int Tokenparser::proc(std::shared_ptr<BlockStatement> parent, const bool _inline, const bool subscope) {
 		std::unique_lock<std::shared_mutex> raii(parent->mutex);
-		if(subscope && eat(Tokens::TOK_DEL_CBRACL)) {
-			if(proc_body(parent, Tokens::TOK_DEL_CBRACR)) return 1;
+		if(eat(Tokens::TOK_DEL_CBRACL)) {
+			std::shared_ptr<BlockStatement> block = std::make_shared<BlockStatement>();
+			if(proc_body(block, Tokens::TOK_DEL_CBRACR)) return 1;
+			parent->childs.push_back(block);
 			return 0;
 		}
 
