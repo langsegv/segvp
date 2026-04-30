@@ -13,8 +13,34 @@ namespace segvc {
 	*/
 	int Tokenparser::proc(std::shared_ptr<BlockStatement> parent, const bool _inline, const bool subscope) {
 		std::unique_lock<std::shared_mutex> raii(parent->mutex);
-		if(subscope && eat(Tokens::TOK_DEL_CBRACL)) {
-			if(proc_body(parent, Tokens::TOK_DEL_CBRACR)) return 1;
+		if(eat(Tokens::TOK_DEL_CBRACL)) {
+			std::shared_ptr<BlockStatement> block = std::make_shared<BlockStatement>();
+			parent->childs.push_back(block);
+			if(proc_body(block, Tokens::TOK_DEL_CBRACR)) return 1;
+			return 0;
+		} else if (eat(Tokens::TOK_KEY_EXTERN)) {
+			std::shared_ptr<BlockStatement> block = std::make_shared<BlockStatement>();
+			parent->childs.push_back(block);
+			block->type = BlockStatement::EXTERN;
+			if(proc(block)) return 1;
+			return 0;
+		} else if (eat(Tokens::TOK_KEY_PUB)) {
+			std::shared_ptr<BlockStatement> block = std::make_shared<BlockStatement>();
+			parent->childs.push_back(block);
+			block->type = BlockStatement::PUB;
+			if(proc(block)) return 1;
+			return 0;
+		} else if (eat(Tokens::TOK_KEY_PRIV)) {
+			std::shared_ptr<BlockStatement> block = std::make_shared<BlockStatement>();
+			parent->childs.push_back(block);
+			block->type = BlockStatement::PRIV;
+			if(proc(block)) return 1;
+			return 0;
+		} else if (eat(Tokens::TOK_KEY_DEFER)) {
+			std::shared_ptr<BlockStatement> block = std::make_shared<BlockStatement>();
+			parent->childs.push_back(block);
+			block->type = BlockStatement::DEFER;
+			if(proc(block)) return 1;
 			return 0;
 		}
 
