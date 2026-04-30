@@ -59,6 +59,10 @@ namespace segvc {
             type = Tokens::TOK_KEY_VOL;
         else if(name == "extern")
             type = Tokens::TOK_KEY_EXTERN;
+        else if(name == "pub")
+            type = Tokens::TOK_KEY_EXTERN;
+        else if(name == "defer")
+            type = Tokens::TOK_KEY_EXTERN;
         else if(name == "static")
             type = Tokens::TOK_KEY_STATIC;
         else if(name == "enum")

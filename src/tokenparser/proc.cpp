@@ -24,6 +24,18 @@ namespace segvc {
 			block->type = BlockStatement::EXTERN;
 			if(proc(block)) return 1;
 			return 0;
+		} else if (eat(Tokens::TOK_KEY_PUB)) {
+			std::shared_ptr<BlockStatement> block = std::make_shared<BlockStatement>();
+			parent->childs.push_back(block);
+			block->type = BlockStatement::PUB;
+			if(proc(block)) return 1;
+			return 0;
+		} else if (eat(Tokens::TOK_KEY_DEFER)) {
+			std::shared_ptr<BlockStatement> block = std::make_shared<BlockStatement>();
+			parent->childs.push_back(block);
+			block->type = BlockStatement::DEFER;
+			if(proc(block)) return 1;
+			return 0;
 		}
 
 		DeclarationType dec_type = DeclarationType::UNDEFINED;
