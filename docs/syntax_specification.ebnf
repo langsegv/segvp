@@ -152,8 +152,9 @@ returnStatement = "return", [ expression ];
 statement = ( declarationStatement | scopeStatement | functionDeclarationStatement | expressionStatement | ifStatement | forStatement | doWhileStatement | returnStatement );
 
 
+(***** Modularity *****)
 
-moduleSpecification = "mod", identifier;
+moduleSpecification = "mod", identifier, { ".", identifier };
 importRequest = "import", identifier, { ".",  identifier }, [ "as", identifier ];
 
 program = [ moduleSpecification ], { importRequest }, { statement, [ ";" ] };
