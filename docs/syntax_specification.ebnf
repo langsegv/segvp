@@ -61,8 +61,7 @@ memberAccessExpression = primaryExpression, { ( "." | "->" | "::" ),  primaryExp
 
 functionCallOperator = "(", [ expression, { ",", expression } ], ")";
 
-rangeExpression = expression, ( ".." | "..=" ), expression;
-subscriptionOperator = "[", ( expression | rangeExpression ), { ",", ( expression | rangeExpression ) }, "]";
+subscriptionOperator = "[", ( expression ), { ",", ( expression ) }, "]";
 
 postfixUnaryOperator = "++" | "--" | functionCallOperator | subscriptionOperator;
 postfixUnaryExpression = memberAccessExpression, { postfixUnaryOperator };
