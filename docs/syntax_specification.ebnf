@@ -32,7 +32,7 @@ number = (
 	| ( digit - "0" ), { digit }
 ), [ identifier ];
 
-numberLiteral = ( number, [ ".", number ] ) | ( ".", number )
+numberLiteral = ( number, [ ".", number ] ) | ( ".", number );
 
 charLiteral= "'", ? a character ?, "'";
 stringLiteral= "\"", {? a character ?}, "\"";
@@ -106,7 +106,7 @@ binaryOrExpression = binaryAndExpression, { ( "||" ), binaryAndExpression };
 (* Ternary *)
 ternaryExpression = binaryOrExpression, [ "?", [ expression ], ":", expression ];
 
-rangeExpression = ternaryExpression, { ( ".." | "..=" ), ternaryExpression }
+rangeExpression = ternaryExpression, { ( ".." | "..=" ), ternaryExpression };
 
 (* Assignment *)
 binaryAssignmentExpression = rangeExpression, [ ( "=" | "+=" | "-=" | "*=" | "/=" | "%=" | "&=" | "&&=" | "||=" | "^=" | "%=" | "<<=" | ">>=" | "<>" ), binaryAssignmentExpression ];
@@ -126,7 +126,7 @@ expression = tupleExpression | commaExpression | binaryAssignmentExpression;
 declarationStatement = ( "let" | "static" | "const" ), declarationEntry, [ "=", expression ];
 
 
-scopeQualifier = ( "extern", [ stringLiteral ] ) | "pub" | "priv" | "defer" | ;
+scopeQualifier = ( "extern", [ stringLiteral ] ) | "pub" | "priv" | "defer" ;
 
 (* Scope / Block *)
 scopeStatement = [ scopeQualifier ], ( statement | "{", { statement }, "}" );
