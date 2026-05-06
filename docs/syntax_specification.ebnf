@@ -47,7 +47,7 @@ functionConstructor = "(", { [ identifier ], typeEntry }, ")";
 
 typeQualifier = "*" | "&" | "mut" | "const" | "vol" | arrayConstructor | functionConstructor;
 
-typeEntry = { typeQualifier }, [ identifier ];
+typeEntry = { typeQualifier }, [ identifier | dataBundleQualifier, dataBundleBody ];
 
 declarationEntry = ( identifier | "(", declarationEntry, ")" ), typeEntry;
 
@@ -149,8 +149,15 @@ doWhileStatement = ["do", statement], "while", expression, statement, ["then", s
 (* Return *)
 returnStatement = "return", [ expression ];
 
-statement = ( declarationStatement | scopeStatement | functionDeclarationStatement | expressionStatement | ifStatement | forStatement | doWhileStatement | returnStatement );
+statement = ( dataBundleStatement | declarationStatement | scopeStatement | functionDeclarationStatement | expressionStatement | ifStatement | forStatement | doWhileStatement | returnStatement );
 
+
+(***** Data Bundles *****)
+dataBundleQualifier = "struct" | "union" | "enum";
+dataBundleBody = "{"
+                , { declarationEntry }
+                ,"}";
+dataBundleStatement = dataBundleQualifier, identifier, dataBundleBody;
 
 (***** Modularity *****)
 
