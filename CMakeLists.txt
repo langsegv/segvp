@@ -5,6 +5,8 @@ project(segvc-parser
 	LANGUAGES C CXX
 )
 
+set(SEGVC_PARSER_VERSION_METADATA "alpha.1")
+
 option(IS_SHARED "Build shared library" ON)
 
 if(IS_SHARED)
@@ -29,4 +31,10 @@ target_include_directories(segvc-parser
     PUBLIC
         $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
         $<INSTALL_INTERFACE:include>
+)
+
+set_target_properties(segvc-parser PROPERTIES
+		VERSION "${PROJECT_VERSION}-${SEGVC_PARSER_VERSION_METADATA}"
+		SOVERSION 1
+		OUTPUT_NAME "segvcparser"
 )
