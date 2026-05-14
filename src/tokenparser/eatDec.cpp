@@ -5,12 +5,14 @@
 
 namespace segvc {
 
-	std::unique_ptr<DeclarationEntry> Tokenparser::readDeclarationEntry() {
+	std::unique_ptr<DeclarationEntry> Tokenparser::readDeclarationEntry(
+		DeclarationType dec_type
+	) {
 		std::unique_ptr<DeclarationEntry> decl = std::make_unique<DeclarationEntry>();
 		if (eat(Tokens::TOK_DEL_PARANL)) {
 			decl->type = DeclarationEntry::Type::parent;
 			do {
-				std::unique_ptr<DeclarationEntry> child = readDeclarationEntry();
+				std::unique_ptr<DeclarationEntry> child = readDeclarationEntry(dec_type);
 				if (!child) {
 					/* error */
 					return nullptr;
@@ -39,6 +41,8 @@ namespace segvc {
 
 		decl->typer = c_typer;
 
+
+
 		return decl;
 	}
 
@@ -57,7 +61,7 @@ namespace segvc {
 		parent->childs.push_back(decStm);
 
 		decStm->dec_type = dec_type;
-		if (!((decStm->entry = readDeclarationEntry()))) {
+		if (!((decStm->entry = readDeclarationEntry(dec_type)))) {
 			/* error */
 			return false;
 		}
@@ -69,4 +73,24 @@ namespace segvc {
 		return true;
 	}
 
+	void Tokenparser::push_symbols_from_dec_entry(
+		DeclarationType dec_type,
+		std::unique_ptr<DeclarationEntry> &entry,
+		std::shared_ptr<TypeEntry> type
+		) {
+		if (type == nullptr)
+			type = entry->typer;
+		else
+			concat(entry->typer, type);
+
+		if (entry->type == DeclarationEntry::Type::individual) {
+			*_symbol_output_pipe << Symbol{
+				.valueType = entry->typer,
+				.declType = dec_type,
+				.name = entry->name,
+			};
+		} else for (auto &entry: entry->childs) {
+			push_symbols_from_dec_entry(dec_type, entry, type);
+		}
+	}
 }

@@ -62,6 +62,13 @@ namespace segvc {
 			/* error */
 			return 0;
 		}
+
+		*_symbol_output_pipe << Symbol{
+			.valueType = c_typer,
+			.declType = dec_type,
+			.name = var_name,
+		};
+
 		parent->childs.push_back(decStm);
 		return 1;
 	}

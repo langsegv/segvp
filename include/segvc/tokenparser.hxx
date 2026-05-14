@@ -5,6 +5,8 @@
 #include<segvc/tokens.hxx>
 #include<segvc/expressions.hxx>
 
+#include "symbol.h"
+
 namespace segvc {
 
 struct Tokenparser;
@@ -18,6 +20,7 @@ extern struct parser_eval_order_t {
 struct Tokenparser {
 
 	DataPipe<Token> *_input_pipe;
+	DataPipe<Symbol> *_symbol_output_pipe;
 	std::shared_ptr<BlockStatement> stm_root;
 	int _log_options;
 	Token c_token;
@@ -29,6 +32,7 @@ struct Tokenparser {
 	};
 
 	void use(DataPipe<Token> &input_pipe);
+	void use(DataPipe<Symbol> &symbol_output_pipe);
 	void use(std::shared_ptr<BlockStatement> stm_root);
 	void use(int log_options);
 
@@ -83,7 +87,14 @@ struct Tokenparser {
 	}
 
 private:
-	std::unique_ptr<DeclarationEntry> readDeclarationEntry();
+	std::unique_ptr<DeclarationEntry> readDeclarationEntry(
+		DeclarationType dec_type
+	);
+	void push_symbols_from_dec_entry(
+		DeclarationType dec_type,
+		std::unique_ptr<DeclarationEntry> &entry,
+		std::shared_ptr<TypeEntry> type
+	);
 };
 
 }
