@@ -1,79 +1,51 @@
 #include <segvc/tokens.hxx>
 #include <segvc/tokenizer.hxx>
 #include <string>
-#include <cstring>
-#include <cstdint>
-#include <cctype>
-#include <segvc/qcerrors.hxx>
-#include <iostream>
-#include <unordered_map>
+#include <map>
 
 namespace segvc {
 
-	void Tokenizer::procAlpNum(Token& arg) {
-		const std::string& name = arg.name;
-		Tokens::Type type;
-		if(name == "struct")
-			type = Tokens::TOK_STRUCT;
-		else if(name == "in")
-			type = Tokens::TOK_KEY_IN;
-		else if(name == "let")
-			type = Tokens::TOK_KEY_LET;
-		else if(name == "fn")
-			type = Tokens::TOK_KEY_FN;
-		else if(name == "if")
-			type = Tokens::TOK_KEY_IF;
-		else if(name == "for")
-		    type = Tokens::TOK_KEY_FOR;
-		else if(name == "while")
-			type = Tokens::TOK_KEY_WHILE;
-		else if(name == "return")
-			type = Tokens::TOK_KEY_RETURN;
-		else if(name == "else")
-            type = Tokens::TOK_KEY_ELSE;
-	    else if(name == "do")
-            type = Tokens::TOK_KEY_DO;
-		else if(name == "then")
-    		type = Tokens::TOK_KEY_THEN;
-        else if(name == "switch")
-            type = Tokens::TOK_KEY_SWITCH;
-        else if(name == "case")
-            type = Tokens::TOK_KEY_CASE;
-        else if(name == "default")
-            type = Tokens::TOK_KEY_DEFAULT;
-        else if(name == "break")
-            type = Tokens::TOK_KEY_BREAK;
-        else if(name == "continue")
-            type = Tokens::TOK_KEY_CONTINUE;
-        else if(name == "goto")
-            type = Tokens::TOK_KEY_GOTO;
-        else if(name == "sizeof")
-            type = Tokens::TOK_KEY_SIZEOF;
-        else if(name == "typedef")
-            type = Tokens::TOK_KEY_TYPEDEF;
-        else if(name == "mut")
-            type = Tokens::TOK_KEY_MUT;
-        else if(name == "const")
-            type = Tokens::TOK_KEY_CONST;
-        else if(name == "vol")
-            type = Tokens::TOK_KEY_VOL;
-        else if(name == "extern")
-            type = Tokens::TOK_KEY_EXTERN;
-        else if(name == "pub")
-            type = Tokens::TOK_KEY_PUB;
-        else if(name == "priv")
-            type = Tokens::TOK_KEY_PRIV;
-        else if(name == "defer")
-            type = Tokens::TOK_KEY_DEFER;
-        else if(name == "static")
-            type = Tokens::TOK_KEY_STATIC;
-        else if(name == "enum")
-            type = Tokens::TOK_KEY_ENUM;
-        else if(name == "union")
-            type = Tokens::TOK_KEY_UNION;
-		else type = Tokens::TOK_IDENTIFIER;
+    std::map<std::string, Tokens::Type> tokenmap = {
+        {"struct", Tokens::TOK_STRUCT},
+        {"in", Tokens::TOK_KEY_IN},
+        {"let", Tokens::TOK_KEY_LET},
+        {"fn", Tokens::TOK_KEY_FN},
+        {"if", Tokens::TOK_KEY_IF},
+        {"for", Tokens::TOK_KEY_FOR},
+        {"while", Tokens::TOK_KEY_WHILE},
+        {"return", Tokens::TOK_KEY_RETURN},
+        {"else", Tokens::TOK_KEY_ELSE},
+        {"do", Tokens::TOK_KEY_DO},
+        {"then", Tokens::TOK_KEY_THEN},
+        {"switch", Tokens::TOK_KEY_SWITCH},
+        {"case", Tokens::TOK_KEY_CASE},
+        {"default", Tokens::TOK_KEY_DEFAULT},
+        {"break", Tokens::TOK_KEY_BREAK},
+        {"continue", Tokens::TOK_KEY_CONTINUE},
+        {"goto", Tokens::TOK_KEY_GOTO},
+        {"sizeof", Tokens::TOK_KEY_SIZEOF},
+        {"typedef", Tokens::TOK_KEY_TYPEDEF},
+        {"mut", Tokens::TOK_KEY_MUT},
+        {"const", Tokens::TOK_KEY_CONST},
+        {"vol", Tokens::TOK_KEY_VOL},
+        {"extern", Tokens::TOK_KEY_EXTERN},
+        {"pub", Tokens::TOK_KEY_PUB},
+        {"priv", Tokens::TOK_KEY_PRIV},
+        {"defer", Tokens::TOK_KEY_DEFER},
+        {"static", Tokens::TOK_KEY_STATIC},
+        {"enum", Tokens::TOK_KEY_ENUM},
+        {"union", Tokens::TOK_KEY_UNION},
+    };
 
-		arg.ttype = type;
-	};
+	void Tokenizer::procAlpNum(Token& arg) {
+		for (auto [name, type] : tokenmap) {
+			if (arg.name == name) {
+				arg.ttype = type;
+				return;
+			}
+		}
+
+		arg.ttype = Tokens::TOK_IDENTIFIER;
+	}
 
 }
